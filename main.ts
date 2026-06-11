@@ -130,6 +130,31 @@ function fillOrder(side:string, price:number, quantity:number, userId:string):nu
                 continue; // i feel a bug here because when a bid is made at larger ask price, it should be filled immediatlely with the current prize 
                // which i think is missing here.
             }
+            if(asks[i].quantity > remainingQuantity){
+                asks[i].quantity -= remainingQuantity;
+                flipBalance(asks[i].userId, userId, remainingQuantity, asks[i].price);
+                return 0;
+            }else{
+                remainingQuantity -= asks[i].quantity;
+                flipBalance(asks[i].userId, userId, asks[i].quantity, asks[i].price);
+                asks.pop();
+            }
+        }
+    } else {
+        for(let i=bids.length-1; i>=0;i--){
+            if(bids[i].price < price){
+                continue;
+            }
+            if(bids[i].quantity > remainingQuantity){
+                bids[i].quantity -=remainingQuantity;;
+                flipBalance(userId,bids[i].userId, remainingQuantity,price);
+                return 0;
+            }else{
+                remainingQuantity -= bids[i].quantity;
+                flipBalance(userId,bids[i].userId, bids[i].quantity, price);
+                bids.pop();
+            }
         }
     }
+    return remainingQuantity;
 }
