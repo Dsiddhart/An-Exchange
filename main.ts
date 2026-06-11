@@ -128,7 +128,7 @@ function fillOrder(side:string, price:number, quantity:number, userId:string):nu
         for(let i=asks.length-1; i>=0;i--){
             if(asks[i].price > price){
                 continue; // i feel a bug here because when a bid is made at larger ask price, it should be filled immediatlely with the current prize 
-               // which i think is missing here
+               // which i think is missing here.
             }
         }
     }
